@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Color</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+<style>
+	body {
+		font-family: Roboto;
+		padding: 0;
+		margin: 0;
+	}
+	.menu {
+	  display: block;
+	  text-align: : right;
+	  padding: 10px;
+	  margin-bottom: 4px;
+	}
+	.menu .switch {
+	  position: relative;
+	  display: inline-block;
+	  width: 40px;
+	  height: 24px;
+	}
+	.menu .switch input { 
+	  opacity: 0;
+	  width: 0;
+	  height: 0;
+	}
+	.menu .slider {
+	  position: absolute;
+	  cursor: pointer;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background-color: #ccc;
+	  -webkit-transition: .4s;
+	  transition: .4s;
+	}
+	.menu .slider:before {
+	  position: absolute;
+	  content: "";
+	  height: 16px;
+	  width: 16px;
+	  left: 4px;
+	  bottom: 4px;
+	  background-color: white;
+	  -webkit-transition: .4s;
+	  transition: .4s;
+	}
+	.menu input:checked + .slider {
+	  background-color: #2196F3;
+	}
+	.menu input:focus + .slider {
+	  box-shadow: 0 0 1px #2196F3;
+	}
+	.menu input:checked + .slider:before {
+	  -webkit-transform: translateX(16px);
+	  -ms-transform: translateX(16px);
+	  transform: translateX(16px);
+	}
+	.menu .slider.round {
+	  border-radius: 34px;
+	}
+	.menu .slider.round:before {
+	  border-radius: 50%;
+	}
+	.menu .switch ~ span {
+		position: relative;
+		top:3px;
+		left:5px;
+		font-weight: 300;
+	}
+	.menu span+.switch {
+		margin-left: 50px;
+	}
+	h4 {
+		display: none;
+		margin:0 0 5px 4px;
+		font-weight: 400;
+	}
+</style>
+<style>
+	.color {
+		margin: 0 0 20px;
+		padding: 4px;
+		display: flex;
+		overflow: visible;
+	}
+    .color ul {
+    	flex:1;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+    }
+    .color li {
+    	list-style: none;
+        height: 16px;
+        padding: 15px 8px;
+        color: #101820;
+        font-size: 13px;
+        font-weight: 300;
+        text-align: right;
+        cursor:pointer;
+        transition: all .1s ease-in-out; 
+        margin: 0;
+        position: relative;
+    }
+	.color li:hover { 
+		transform: scale(1.16);
+		z-index: 2;
+	}
+    .color li.w {
+    	color:#fff;
+    }
+    .color li.f {
+    	pointer-events: none;
+    }
+    .name {
+    	display: none;
+    	font-size: 10px;
+    	font-weight: 400;
+    	float:left;
+    	position: absolute;
+    	top:4px;
+    	left:4px;
+    	text-align: left;
+    	text-transform: lowercase;
+    }
+    .name + .hex {
+    	top: 9px;
+    }
+    .hex {
+    	text-transform: uppercase;
+    	position: relative;
+    }
+
+    .white,.gwhite {background-color: #ffffff}
+    .aluminium-900 {background-color: #7d8186}
+    .aluminium-800 {background-color: #8b8f93}
+    .aluminium-700 {background-color: #9a9da1}
+    .aluminium-600 {background-color: #a8abae} 
+    .aluminium-500 {background-color: #b7b9bc} 
+    .aluminium-400 {background-color: #c5c7c9}
+    .aluminium-300 {background-color: #d3d5d6}
+    .aluminium-200 {background-color: #e2e3e4}
+    .aluminium-100 {background-color: #f0f1f1} 
+
+    .black,.gblack {background-color: #101820}
+    .black-900,.gblack-900 {background-color: #161718}
+    .black-800,.gblack-800 {background-color: #212224}
+    .black-700,.gblack-700 {background-color: #2c2e30}
+    .black-600,.gblack-600 {background-color: #373a3c} 
+    .black-500,.gblack-500 {background-color: #424548} 
+    .black-400,.gblack-400 {background-color: #4d5154}
+    .black-300,.gblack-300 {background-color: #585c60}
+    .black-200,.gblack-200 {background-color: #63686c}
+    .black-100,.gblack-100 {background-color: #6f7479} 
+
+    .grey-900,.ggrey-900 {background-color: #222121}
+    .grey-800,.ggrey-800 {background-color: #454342}
+    .grey-700,.ggrey-700 {background-color: #686463}
+    .grey-600,.ggrey-600 {background-color: #8b8684}
+    .grey,.ggrey {background-color: #aea8a5}
+    .grey-400,.ggrey-400 {background-color: #beb9b7}
+    .grey-300,.ggrey-300 {background-color: #cecac9}
+    .grey-200,.ggrey-200 {background-color: #dedcdb}
+    .grey-100,.ggrey-100 {background-color: #eeeded} 
+
+    .brown-900 {background-color: #13100c}
+    .brown-800 {background-color: #272018}
+    .brown-700 {background-color: #3b3024}
+    .brown-600 {background-color: #4f4030}
+    .brown {background-color: #63513d}
+    .brown-400 {background-color: #827363}
+    .brown-300 {background-color: #a1968a}
+    .brown-200 {background-color: #c0b9b1}
+    .brown-100 {background-color: #dfdcd8}  
+
+    .flame-900 {background-color: #2c0d01}
+    .flame-800 {background-color: #581b02}
+    .flame-700 {background-color: #842803}
+    .flame-600 {background-color: #b03604}
+    .flame {background-color: #dc4405}
+    .flame-400 {background-color: #e36936}
+    .flame-300 {background-color: #ea8e69}
+    .flame-200 {background-color: #f1b49b}
+    .flame-100 {background-color: #f8d9cd}
+
+  	.orange-900 {background-color: #301400}
+  	.orange-800 {background-color: #602800}
+  	.orange-700 {background-color: #903c00}
+  	.orange-600 {background-color: #c05000}
+  	.orange {background-color: #f06400}
+  	.orange-400 {background-color: #f38332}
+  	.orange-300 {background-color: #f6a266}
+  	.orange-200 {background-color: #f9c199}
+  	.orange-100 {background-color: #fce0cc}
+
+  	.yellow-900 {background-color: #302700}
+  	.yellow-800 {background-color: #604e00}
+  	.yellow-700 {background-color: #907500}
+  	.yellow-600 {background-color: #c09c00}
+  	.yellow {background-color: #f1c400}
+  	.yellow-400 {background-color: #f3cf32}
+  	.yellow-300 {background-color: #f6db66}
+  	.yellow-200 {background-color: #f9e799}
+  	.yellow-100 {background-color: #fcf3cc}
+
+  	.lime-green-900 {background-color: #1a2500}
+  	.lime-green-800 {background-color: #344b00}
+  	.lime-green-700 {background-color: #4f7100}
+  	.lime-green-600 {background-color: #699700}
+  	.lime-green {background-color: #84bd00}
+  	.lime-green-400 {background-color: #9cca32}
+  	.lime-green-300 {background-color: #b5d766}
+  	.lime-green-200 {background-color: #cde499}
+  	.lime-green-100 {background-color: #e6f1cc}
+
+  	.green-900 {background-color: #00180c}
+  	.green-800 {background-color: #003118}
+  	.green-700 {background-color: #004925}
+  	.green-600 {background-color: #006231}
+  	.green {background-color: #007b3e}
+  	.green-400 {background-color: #329564}
+  	.green-300 {background-color: #66af8b}
+  	.green-200 {background-color: #99cab1}
+  	.green-100 {background-color: #cce4d8}
+
+  	.turquoise-900 {background-color: #001c1d}
+  	.turquoise-800 {background-color: #00383b}
+  	.turquoise-700 {background-color: #005459}
+  	.turquoise-600 {background-color: #007077}
+  	.turquoise {background-color: #008c95}
+  	.turquoise-400 {background-color: #32a3aa}
+  	.turquoise-300 {background-color: #66babf}
+  	.turquoise-200 {background-color: #99d1d4}
+  	.turquoise-100 {background-color: #cce8e9}
+
+  	.blue-900 {background-color: #00131f}
+  	.blue-800 {background-color: #00273e}
+  	.blue-700 {background-color: #003a5d}
+  	.blue-600 {background-color: #004e7c}
+  	.blue {background-color: #00629b}
+  	.blue-400 {background-color: #3281af}
+  	.blue-300 {background-color: #66a0c3}
+  	.blue-200 {background-color: #99c0d7}
+  	.blue-100 {background-color: #ccdfeb}
+
+  	.dark-blue-900 {background-color: #000811}
+  	.dark-blue-800 {background-color: #001022}
+  	.dark-blue-700 {background-color: #001833}
+  	.dark-blue-600 {background-color: #002044}
+  	.dark-blue {background-color: #002855}
+  	.dark-blue-400 {background-color: #325276}
+  	.dark-blue-300 {background-color: #667e99}
+  	.dark-blue-200 {background-color: #99a9bb}
+  	.dark-blue-100 {background-color: #ccd4dd}
+
+  	.violet-900 {background-color: #13071f}
+  	.violet-800 {background-color: #260e3f}
+  	.violet-700 {background-color: #39165f}
+  	.violet-600 {background-color: #4c1d7f}
+  	.violet {background-color: #5f259f}
+  	.violet-400 {background-color: #7e50b2}
+  	.violet-300 {background-color: #9f7cc5}
+  	.violet-200 {background-color: #bfa7d8}
+  	.violet-100 {background-color: #dfd3eb}
+
+  	.purple-900 {background-color: #190715}
+  	.purple-800 {background-color: #330f2b}
+  	.purple-700 {background-color: #4c1740}
+  	.purple-600 {background-color: #661f56}
+  	.purple {background-color: #80276c}
+  	.purple-400 {background-color: #995289}
+  	.purple-300 {background-color: #b27da6}
+  	.purple-200 {background-color: #cca8c4}
+  	.purple-100 {background-color: #e5d3e1}
+
+  	.pink-900 {background-color: #2f1318}
+  	.pink-800 {background-color: #5f2630}
+  	.pink-700 {background-color: #8f3948}
+  	.pink-600 {background-color: #bf4c60}
+  	.pink {background-color: #ef6079}
+  	.pink-400 {background-color: #f27f93}
+  	.pink-300 {background-color: #f59fae}
+  	.pink-200 {background-color: #f8bfc9}
+  	.pink-100 {background-color: #fbdfe4}
+
+  	.red-900 {background-color: #250006}
+  	.red-800 {background-color: #4a000c}
+  	.red-700 {background-color: #6f0013}
+  	.red-600 {background-color: #940019}
+  	.red,.gred {background-color: #ba0020}
+  	.red-400 {background-color: #c7324c}
+  	.red-300 {background-color: #d56679}
+  	.red-200 {background-color: #e399a5}
+  	.red-100 {background-color: #f1ccd2}
+
+	.fb {background-color: #1877f2}
+	.tw {background-color: #55acee}
+	.ig {background-color: #e4405f}
+	.fr {background-color: #3C3963}
+	.nw {background-color: #690}
+	.bl {background-color: #f37a01}
+	.yt {background-color: #cd201f}
+</style>
+<style>
+	.horizontal {
+		display: block; 
+	}
+    .horizontal ul {
+        display: flex;
+    }
+    .horizontal li {
+    	flex:1;
+    }
+	.horizontal li:hover { 
+		transform: scale(1.02);
+	}
+	.horizontal.s li:hover { 
+		transform: scale(1.04);
+	}
+</style>
+<style>
+	body.dark {
+		background-color: #000;
+	}
+	.dark .menu .switch ~ span {
+		color:#cfd0d2;
+	}
+	.dark .disable {
+		pointer-events: none;
+		opacity: 0;
+	}
+	.color.gap ul {
+		margin: 0 4px;
+	}
+	.color.gap li {
+		margin: 8px 0;
+		border-radius: 2px;
+	}
+</style>
+</head>
+
+<body class="">
+	<div class="menu">
+		<label for="chkHex" class="switch">
+			<input type="checkbox" checked id="chkHex">
+			<span class="slider round"></span>
+		</label>
+		<span>Hex</span>
+		<label for="chkName" class="switch">
+			<input type="checkbox" id="chkName">
+			<span class="slider round"></span>
+		</label>
+		<span>Name</span>
+		<label for="chkDark" class="switch">
+			<input type="checkbox" id="chkDark">
+			<span class="slider round"></span>
+		</label>
+		<span>Dark</span>
+		<label for="chkGap" class="switch">
+			<input type="checkbox" checked id="chkGap">
+			<span class="slider round"></span>
+		</label>
+		<span>Gap</span>
+	</div>
+	<h4>Primary</h4>
+	<div class="horizontal color">
+		<ul>
+			<li class="gred" onclick="clipboard('.gredz')"><span class="name">Primary Red</span><span class="hex gredz">#ba0020</span></li>
+			<li class="gblack w" onclick="clipboard('.gblackz')"><span class="name">Primary Black</span><span class="hex gblackz">#101820</span></li>
+			<li class="ggrey" onclick="clipboard('.ggreyz')"><span class="name">Primary Grey</span><span class="hex ggreyz">#aea8a5</span></li>
+			<li class="gwhite" onclick="clipboard('.gwhitez')"><span class="name">Primary White</span><span class="hex gwhitez">#ffffff</span></li>
+		</ul>
+	</div>
+	<h4>Secondary</h4>
+	<div id="main" class="color gap">
+	    <ul>
+	    	<!-- <li class="black w" onclick="clipboard('.black .hex')"><span class="name">Black</span><span class="hex">#101820</span></li> -->
+	        <li class="black-900 w" onclick="clipboard('.black-900 .hex')"><span class="name">Black-900</span><span class="hex">#161718</span></li>
+	        <li class="black-800 w" onclick="clipboard('.black-800 .hex')"><span class="name">Black-800</span><span class="hex">#212224</span></li>
+	        <li class="black-700 w" onclick="clipboard('.black-700 .hex')"><span class="name">Black-700</span><span class="hex">#2c2e30</span></li>
+	        <li class="black-600 w" onclick="clipboard('.black-600 .hex')"><span class="name">Black-600</span><span class="hex">#373a3c</span></li>
+	        <li class="black-500 w" onclick="clipboard('.black-500 .hex')"><span class="name">Black-500</span><span class="hex">#424548</span></li>
+	        <li class="black-400 w" onclick="clipboard('.black-400 .hex')"><span class="name">Black-400</span><span class="hex">#4d5154</span></li>
+	        <li class="black-300 w" onclick="clipboard('.black-300 .hex')"><span class="name">Black-300</span><span class="hex">#585c60</span></li>
+	        <li class="black-200 w" onclick="clipboard('.black-200 .hex')"><span class="name">Black-200</span><span class="hex">#63686c</span></li>
+	        <li class="black-100 w" onclick="clipboard('.black-100 .hex')"><span class="name">Black-100</span><span class="hex">#6f7479</span></li>
+	    </ul>
+		<ul>
+	        <li class="aluminium-900 w" onclick="clipboard('.aluminium-900 .hex')"><span class="name">Aluminium-900</span><span class="hex">#7d8186</span></li>
+	        <li class="aluminium-800 w" onclick="clipboard('.aluminium-800 .hex')"><span class="name">Aluminium-800</span><span class="hex">#8b8f93</span></li>
+	        <li class="aluminium-700 w" onclick="clipboard('.aluminium-700 .hex')"><span class="name">Aluminium-700</span><span class="hex">#9a9da1</span></li>
+	        <li class="aluminium-600" onclick="clipboard('.aluminium-600 .hex')"><span class="name">Aluminium-600</span><span class="hex">#a8abae</span></li>
+	        <li class="aluminium-500" onclick="clipboard('.aluminium-500 .hex')"><span class="name">Aluminium-500</span><span class="hex">#b7b9bc</span></li>
+	        <li class="aluminium-400" onclick="clipboard('.aluminium-400 .hex')"><span class="name">Aluminium-400</span><span class="hex">#c5c7c9</span></li>
+	        <li class="aluminium-300" onclick="clipboard('.aluminium-300 .hex')"><span class="name">Aluminium-300</span><span class="hex">#d3d5d6</span></li>
+	        <li class="aluminium-200" onclick="clipboard('.aluminium-200 .hex')"><span class="name">Aluminium-200</span><span class="hex">#e2e3e4</span></li>
+	        <li class="aluminium-100" onclick="clipboard('.aluminium-100 .hex')"><span class="name">Aluminium-100</span><span class="hex">#f0f1f1</span></li>
+	    </ul>
+	    <ul>
+	        <li class="grey-900 w dissable" onclick="clipboard('.grey-900 .hex')"><span class="name">Grey-900</span><span class="hex">#222121</span></li>
+	        <li class="grey-800 w" onclick="clipboard('.grey-800 .hex')"><span class="name">Grey-800</span><span class="hex">#454342</span></li>
+	        <li class="grey-700 w" onclick="clipboard('.grey-700 .hex')"><span class="name">Grey-700</span><span class="hex">#686463</span></li>
+	        <li class="grey-600" onclick="clipboard('.grey-600 .hex')"><span class="name">Grey-600</span><span class="hex">#8b8684</span></li>
+	        <li class="grey" onclick="clipboard('.grey .hex')"><span class="name">Grey</span><span class="hex">#aea8a5</span></li>
+	        <li class="grey-400" onclick="clipboard('.grey-400 .hex')"><span class="name">Grey-400</span><span class="hex">#beb9b7</span></li>
+	        <li class="grey-300" onclick="clipboard('.grey-300 .hex')"><span class="name">Grey-300</span><span class="hex">#cecac9</span></li>
+	        <li class="grey-200" onclick="clipboard('.grey-200 .hex')"><span class="name">Grey-200</span><span class="hex">#dedcdb</span></li>
+	        <li class="grey-100" onclick="clipboard('.grey-100 .hex')"><span class="name">Grey-100</span><span class="hex">#eeeded</span></li>
+	    </ul>
+	    <ul>
+	        <li class="brown-900 w dissable" onclick="clipboard('.brown-900 .hex')"><span class="name">Brown-900</span><span class="hex">#13100c</span></li>
+	        <li class="brown-800 w" onclick="clipboard('.brown-800 .hex')"><span class="name">Brown-800</span><span class="hex">#272018</span></li>
+	        <li class="brown-700 w" onclick="clipboard('.brown-700 .hex')"><span class="name">Brown-700</span><span class="hex">#3b3024</span></li>
+	        <li class="brown-600 w" onclick="clipboard('.brown-600 .hex')"><span class="name">Brown-600</span><span class="hex">#4f4030</span></li>
+	        <li class="brown w" onclick="clipboard('.brown .hex')"><span class="name">Brown</span><span class="hex">#63513d</span></li>
+	        <li class="brown-400 w" onclick="clipboard('.brown-400 .hex')"><span class="name">Brown-400</span><span class="hex">#827363</span></li>
+	        <li class="brown-300" onclick="clipboard('.brown-300 .hex')"><span class="name">Brown-300</span><span class="hex">#a1968a</span></li>
+	        <li class="brown-200" onclick="clipboard('.brown-200 .hex')"><span class="name">Brown-200</span><span class="hex">#c0b9b1</span></li>
+	        <li class="brown-100" onclick="clipboard('.brown-100 .hex')"><span class="name">Brown-100</span><span class="hex">#dfdcd8</span></li>
+	    </ul>
+	    <ul>
+	        <li class="flame-900 w dissable" onclick="clipboard('.flame-900 .hex')"><span class="name">Flame-900</span><span class="hex">#2c0d01</span></li>
+	        <li class="flame-800 w" onclick="clipboard('.flame-800 .hex')"><span class="name">Flame-800</span><span class="hex">#581b02</span></li>
+	        <li class="flame-700 w" onclick="clipboard('.flame-700 .hex')"><span class="name">Flame-700</span><span class="hex">#842803</span></li>
+	        <li class="flame-600 w" onclick="clipboard('.flame-600 .hex')"><span class="name">Flame-600</span><span class="hex">#b03604</span></li>
+	        <li class="flame w" onclick="clipboard('.flame .hex')"><span class="name">Flame</span><span class="hex">#dc4405</span></li>
+	        <li class="flame-400" onclick="clipboard('.flame-400 .hex')"><span class="name">Flame-400</span><span class="hex">#e36936</span></li>
+	        <li class="flame-300" onclick="clipboard('.flame-300 .hex')"><span class="name">Flame-300</span><span class="hex">#ea8e69</span></li>
+	        <li class="flame-200" onclick="clipboard('.flame-200 .hex')"><span class="name">Flame-200</span><span class="hex">#f1b49b</span></li>
+	        <li class="flame-100" onclick="clipboard('.flame-100 .hex')"><span class="name">Flame-100</span><span class="hex">#f8d9cd</span></li>
+	    </ul>
+	    <ul>
+	        <li class="orange-900 w dissable" onclick="clipboard('.orange-900 .hex')"><span class="name">Orange-900</span><span class="hex">#301400</span></li>
+	        <li class="orange-800 w" onclick="clipboard('.orange-800 .hex')"><span class="name">Orange-800</span><span class="hex">#602800</span></li>
+	        <li class="orange-700 w" onclick="clipboard('.orange-700 .hex')"><span class="name">Orange-700</span><span class="hex">#903c00</span></li>
+	        <li class="orange-600 w" onclick="clipboard('.orange-600 .hex')"><span class="name">Orange-600</span><span class="hex">#c05000</span></li>
+	        <li class="orange" onclick="clipboard('.orange .hex')"><span class="name">Orange</span><span class="hex">#f06400</span></li>
+	        <li class="orange-400" onclick="clipboard('.orange-400 .hex')"><span class="name">Orange-400</span><span class="hex">#f38332</span></li>
+	        <li class="orange-300" onclick="clipboard('.orange-300 .hex')"><span class="name">Orange-300</span><span class="hex">#f6a266</span></li>
+	        <li class="orange-200" onclick="clipboard('.orange-200 .hex')"><span class="name">Orange-200</span><span class="hex">#f9c199</span></li>
+	        <li class="orange-100" onclick="clipboard('.orange-100 .hex')"><span class="name">Orange-100</span><span class="hex">#fce0cc</span></li>
+	    </ul>
+	    <ul>
+	        <li class="yellow-900 w dissable" onclick="clipboard('.yellow-900 .hex')"><span class="name">Yellow-900</span><span class="hex">#302700</span></li>
+	        <li class="yellow-800 w" onclick="clipboard('.yellow-800 .hex')"><span class="name">Yellow-800</span><span class="hex">#604e00</span></li>
+	        <li class="yellow-700 w" onclick="clipboard('.yellow-700 .hex')"><span class="name">Yellow-700</span><span class="hex">#907500</span></li>
+	        <li class="yellow-600" onclick="clipboard('.yellow-600 .hex')"><span class="name">Yellow-600</span><span class="hex">#c09c00</span></li>
+	        <li class="yellow" onclick="clipboard('.yellow .hex')"><span class="name">Yellow</span><span class="hex">#f1c400</span></li>
+	        <li class="yellow-400" onclick="clipboard('.yellow-400 .hex')"><span class="name">Yellow-400</span><span class="hex">#f3cf32</span></li>
+	        <li class="yellow-300" onclick="clipboard('.yellow-300 .hex')"><span class="name">Yellow-300</span><span class="hex">#f6db66</span></li>
+	        <li class="yellow-200" onclick="clipboard('.yellow-200 .hex')"><span class="name">Yellow-200</span><span class="hex">#f9e799</span></li>
+	        <li class="yellow-100" onclick="clipboard('.yellow-100 .hex')"><span class="name">Yellow-100</span><span class="hex">#fcf3cc</span></li>
+	    </ul>
+	    <ul>
+	        <li class="lime-green-900 w dissable" onclick="clipboard('.lime-green-900 .hex')"><span class="name">Lime-900</span><span class="hex">#1a2500</span></li>
+	        <li class="lime-green-800 w" onclick="clipboard('.lime-green-800 .hex')"><span class="name">Lime-800</span><span class="hex">#344b00</span></li>
+	        <li class="lime-green-700 w" onclick="clipboard('.lime-green-700 .hex')"><span class="name">Lime-700</span><span class="hex">#4f7100</span></li>
+	        <li class="lime-green-600 w" onclick="clipboard('.lime-green-600 .hex')"><span class="name">Lime-600</span><span class="hex">#699700</span></li>
+	        <li class="lime-green" onclick="clipboard('.lime-green .hex')"><span class="name">Lime</span><span class="hex">#84bd00</span></li>
+	        <li class="lime-green-400" onclick="clipboard('.lime-green-400 .hex')"><span class="name">Lime-400</span><span class="hex">#9cca32</span></li>
+	        <li class="lime-green-300" onclick="clipboard('.lime-green-300 .hex')"><span class="name">Lime-300</span><span class="hex">#b5d766</span></li>
+	        <li class="lime-green-200" onclick="clipboard('.lime-green-200 .hex')"><span class="name">Lime-200</span><span class="hex">#cde499</span></li>
+	        <li class="lime-green-100" onclick="clipboard('.lime-green-100 .hex')"><span class="name">Lime-100</span><span class="hex">#e6f1cc</span></li>
+	    </ul>
+	    <ul>
+	        <li class="green-900 w dissable" onclick="clipboard('.green-900 .hex')"><span class="name">Green-900</span><span class="hex">#00180c</span></li>
+	        <li class="green-800 w" onclick="clipboard('.green-800 .hex')"><span class="name">Green-800</span><span class="hex">#003118</span></li>
+	        <li class="green-700 w" onclick="clipboard('.green-700 .hex')"><span class="name">Green-700</span><span class="hex">#004925</span></li>
+	        <li class="green-600 w" onclick="clipboard('.green-600 .hex')"><span class="name">Green-600</span><span class="hex">#006231</span></li>
+	        <li class="green w" onclick="clipboard('.green .hex')"><span class="name">Green</span><span class="hex">#007b3e</span></li>
+	        <li class="green-400 w" onclick="clipboard('.green-400 .hex')"><span class="name">Green-400</span><span class="hex">#329564</span></li>
+	        <li class="green-300" onclick="clipboard('.green-300 .hex')"><span class="name">Green-300</span><span class="hex">#66af8b</span></li>
+	        <li class="green-200" onclick="clipboard('.green-200 .hex')"><span class="name">Green-200</span><span class="hex">#99cab1</span></li>
+	        <li class="green-100" onclick="clipboard('.green-100 .hex')"><span class="name">Green-100</span><span class="hex">#cce4d8</span></li>
+	    </ul>
+	    <ul>
+	        <li class="turquoise-900 w dissable" onclick="clipboard('.turquoise-900 .hex')"><span class="name">Turquoise-900</span><span class="hex">#001c1d</span></li>
+	        <li class="turquoise-800 w" onclick="clipboard('.turquoise-800 .hex')"><span class="name">Turquoise-800</span><span class="hex">#00383b</span></li>
+	        <li class="turquoise-700 w" onclick="clipboard('.turquoise-700 .hex')"><span class="name">Turquoise-700</span><span class="hex">#005459</span></li>
+	        <li class="turquoise-600 w" onclick="clipboard('.turquoise-600 .hex')"><span class="name">Turquoise-600</span><span class="hex">#007077</span></li>
+	        <li class="turquoise w" onclick="clipboard('.turquoise .hex')"><span class="name">Turquoise</span><span class="hex">#008c95</span></li>
+	        <li class="turquoise-400" onclick="clipboard('.turquoise-400 .hex')"><span class="name">Turquoise-400</span><span class="hex">#32a3aa</span></li>
+	        <li class="turquoise-300" onclick="clipboard('.turquoise-300 .hex')"><span class="name">Turquoise-300</span><span class="hex">#66babf</span></li>
+	        <li class="turquoise-200" onclick="clipboard('.turquoise-200 .hex')"><span class="name">Turquoise-200</span><span class="hex">#99d1d4</span></li>
+	        <li class="turquoise-100" onclick="clipboard('.turquoise-100 .hex')"><span class="name">Turquoise-100</span><span class="hex">#cce8e9</span></li>
+	    </ul>
+	    <ul>
+	        <li class="blue-900 w dissable" onclick="clipboard('.blue-900 .hex')"><span class="name">Blue-900</span><span class="hex">#00131f</span></li>
+	        <li class="blue-800 w" onclick="clipboard('.blue-800 .hex')"><span class="name">Blue-800</span><span class="hex">#00273e</span></li>
+	        <li class="blue-700 w" onclick="clipboard('.blue-700 .hex')"><span class="name">Blue-700</span><span class="hex">#003a5d</span></li>
+	        <li class="blue-600 w" onclick="clipboard('.blue-600 .hex')"><span class="name">Blue-600</span><span class="hex">#004e7c</span></li>
+	        <li class="blue w" onclick="clipboard('.blue .hex')"><span class="name">Blue</span><span class="hex">#00629b</span></li>
+	        <li class="blue-400 w" onclick="clipboard('.blue-400 .hex')"><span class="name">Blue-400</span><span class="hex">#3281af</span></li>
+	        <li class="blue-300" onclick="clipboard('.blue-300 .hex')"><span class="name">Blue-300</span><span class="hex">#66a0c3</span></li>
+	        <li class="blue-200" onclick="clipboard('.blue-200 .hex')"><span class="name">Blue-200</span><span class="hex">#99c0d7</span></li>
+	        <li class="blue-100" onclick="clipboard('.blue-100 .hex')"><span class="name">Blue-100</span><span class="hex">#ccdfeb</span></li>
+	    </ul>
+	    <ul>
+	        <li class="dark-blue-900 w dissable" onclick="clipboard('.dark-blue-900 .hex')"><span class="name">Dark-blue-900</span><span class="hex">#000811</span></li>
+	        <li class="dark-blue-800 w" onclick="clipboard('.dark-blue-800 .hex')"><span class="name">Dark-blue-800</span><span class="hex">#001022</span></li>
+	        <li class="dark-blue-700 w" onclick="clipboard('.dark-blue-700 .hex')"><span class="name">Dark-blue-700</span><span class="hex">#001833</span></li>
+	        <li class="dark-blue-600 w" onclick="clipboard('.dark-blue-600 .hex')"><span class="name">Dark-blue-600</span><span class="hex">#002044</span></li>
+	        <li class="dark-blue w" onclick="clipboard('.dark-blue .hex')"><span class="name">Dark-blue</span><span class="hex">#002855</span></li>
+	        <li class="dark-blue-400 w" onclick="clipboard('.dark-blue-400 .hex')"><span class="name">Dark-blue-400</span><span class="hex">#325276</span></li>
+	        <li class="dark-blue-300 w" onclick="clipboard('.dark-blue-300 .hex')"><span class="name">Dark-blue-300</span><span class="hex">#667e99</span></li>
+	        <li class="dark-blue-200" onclick="clipboard('.dark-blue-200 .hex')"><span class="name">Dark-blue-200</span><span class="hex">#99a9bb</span></li>
+	        <li class="dark-blue-100" onclick="clipboard('.dark-blue-100 .hex')"><span class="name">Dark-blue-100</span><span class="hex">#ccd4dd</span></li>
+	    </ul>
+	    <ul>
+	        <li class="violet-900 w dissable" onclick="clipboard('.violet-900 .hex')"><span class="name">Violet-900</span><span class="hex">#13071f</span></li>
+	        <li class="violet-800 w" onclick="clipboard('.violet-800 .hex')"><span class="name">Violet-800</span><span class="hex">#260e3f</span></li>
+	        <li class="violet-700 w" onclick="clipboard('.violet-700 .hex')"><span class="name">Violet-700</span><span class="hex">#39165f</span></li>
+	        <li class="violet-600 w" onclick="clipboard('.violet-600 .hex')"><span class="name">Violet-600</span><span class="hex">#4c1d7f</span></li>
+	        <li class="violet w" onclick="clipboard('.violet .hex')"><span class="name">Violet</span><span class="hex">#5f259f</span></li>
+	        <li class="violet-400 w" onclick="clipboard('.violet-400 .hex')"><span class="name">Violet-400</span><span class="hex">#7e50b2</span></li>
+	        <li class="violet-300" onclick="clipboard('.violet-300 .hex')"><span class="name">Violet-300</span><span class="hex">#9f7cc5</span></li>
+	        <li class="violet-200" onclick="clipboard('.violet-200 .hex')"><span class="name">Violet-200</span><span class="hex">#bfa7d8</span></li>
+	        <li class="violet-100" onclick="clipboard('.violet-100 .hex')"><span class="name">Violet-100</span><span class="hex">#dfd3eb</span></li>
+	    </ul>
+	    <ul>
+	        <li class="purple-900 w dissable" onclick="clipboard('.purple-900 .hex')"><span class="name">Purple-900</span><span class="hex">#190715</span></li>
+	        <li class="purple-800 w" onclick="clipboard('.purple-800 .hex')"><span class="name">Purple-800</span><span class="hex">#330f2b</span></li>
+	        <li class="purple-700 w" onclick="clipboard('.purple-700 .hex')"><span class="name">Purple-700</span><span class="hex">#4c1740</span></li>
+	        <li class="purple-600 w" onclick="clipboard('.purple-600 .hex')"><span class="name">Purple-600</span><span class="hex">#661f56</span></li>
+	        <li class="purple w" onclick="clipboard('.purple .hex')"><span class="name">Purple</span><span class="hex">#80276c</span></li>
+	        <li class="purple-400 w" onclick="clipboard('.purple-400 .hex')"><span class="name">Purple-400</span><span class="hex">#995289</span></li>
+	        <li class="purple-300" onclick="clipboard('.purple-300 .hex')"><span class="name">Purple-300</span><span class="hex">#b27da6</span></li>
+	        <li class="purple-200" onclick="clipboard('.purple-200 .hex')"><span class="name">Purple-200</span><span class="hex">#cca8c4</span></li>
+	        <li class="purple-100" onclick="clipboard('.purple-100 .hex')"><span class="name">Purple-100</span><span class="hex">#e5d3e1</span></li>
+	    </ul>
+	    <ul>
+	        <li class="pink-900 w dissable" onclick="clipboard('.pink-900 .hex')"><span class="name">Pink-900</span><span class="hex">#2f1318</span></li>
+	        <li class="pink-800 w" onclick="clipboard('.pink-800 .hex')"><span class="name">Pink-800</span><span class="hex">#5f2630</span></li>
+	        <li class="pink-700 w" onclick="clipboard('.pink-700 .hex')"><span class="name">Pink-700</span><span class="hex">#8f3948</span></li>
+	        <li class="pink-600 w" onclick="clipboard('.pink-600 .hex')"><span class="name">Pink-600</span><span class="hex">#bf4c60</span></li>
+	        <li class="pink" onclick="clipboard('.pink .hex')"><span class="name">Pink</span><span class="hex">#ef6079</span></li>
+	        <li class="pink-400" onclick="clipboard('.pink-400 .hex')"><span class="name">Pink-400</span><span class="hex">#f27f93</span></li>
+	        <li class="pink-300" onclick="clipboard('.pink-300 .hex')"><span class="name">Pink-300</span><span class="hex">#f59fae</span></li>
+	        <li class="pink-200" onclick="clipboard('.pink-200 .hex')"><span class="name">Pink-200</span><span class="hex">#f8bfc9</span></li>
+	        <li class="pink-100" onclick="clipboard('.pink-100 .hex')"><span class="name">Pink-100</span><span class="hex">#fbdfe4</span></li>
+	    </ul>
+	    <ul>
+	        <li class="red-900 w dissable" onclick="clipboard('.red-900 .hex')"><span class="name">Red-900</span><span class="hex">#250006</span></li>
+	        <li class="red-800 w" onclick="clipboard('.red-800 .hex')"><span class="name">Red-800</span><span class="hex">#4a000c</span></li>
+	        <li class="red-700 w" onclick="clipboard('.red-700 .hex')"><span class="name">Red-700</span><span class="hex">#6f0013</span></li>
+	        <li class="red-600 w" onclick="clipboard('.red-600 .hex')"><span class="name">Red-600</span><span class="hex">#940019</span></li>
+	        <li class="red w" onclick="clipboard('.red .hex')"><span class="name">Red</span><span class="hex">#ba0020</span></li>
+	        <li class="red-400" onclick="clipboard('.red-400 .hex')"><span class="name">Red-400</span><span class="hex">#c7324c</span></li>
+	        <li class="red-300" onclick="clipboard('.red-300 .hex')"><span class="name">Red-300</span><span class="hex">#d56679</span></li>
+	        <li class="red-200" onclick="clipboard('.red-200 .hex')"><span class="name">Red-200</span><span class="hex">#e399a5</span></li>
+	        <li class="red-100" onclick="clipboard('.red-100 .hex')"><span class="name">Red-100</span><span class="hex">#f1ccd2</span></li>
+	    </ul>
+	</div>
+	<h4>Social</h4>
+	<div class="horizontal s color">
+	    <ul>
+	        <li class="fb w" onclick="clipboard('.fbz')"><span class="name">Facebook</span><span class="hex fbz">#1877f2</span></li>
+	        <li class="tw w" onclick="clipboard('.twz')"><span class="name">Twitter</span><span class="hex twz">#55acee</span></li>
+	        <li class="ig w" onclick="clipboard('.igz')"><span class="name">Instagram</span><span class="hex igz">#e4405f</span></li>
+	        <li class="fr w" onclick="clipboard('.frz')"><span class="name">Forum</span><span class="hex frz">#3C3963</span></li>
+	        <li class="nw w" onclick="clipboard('.nwz')"><span class="name">News</span><span class="hex nwz">#690</span></li>
+	        <li class="bl w" onclick="clipboard('.blz')"><span class="name">Blog</span><span class="hex blz">#f37a01</span></li>
+	        <li class="yt w" onclick="clipboard('.ytz')"><span class="name">YouTube</span><span class="hex ytz">#cd201f</span></li>
+	    </ul>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>
+    function clipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+    </script>
+    <script>
+    $(function () {
+        $("#chkHex").click(function () {
+            if ($(this).is(":checked")) {
+                $(".hex").show();
+            } else {
+                $(".hex").hide();
+            }
+        });
+    });
+    $(function () {
+        $("#chkName").click(function () {
+            if ($(this).is(":checked")) {
+                $(".name").show();
+            } else {
+                $(".name").hide();
+            }
+        });
+    });
+    $(function () {
+        $("#chkDark").click(function () {
+            if ($(this).is(":checked")) {
+                $("body").addClass("dark");
+            } else {
+                $("body").removeClass("dark");
+            }
+        });
+    });
+    $(function () {
+        $("#chkGap").click(function () {
+            if ($(this).is(":checked")) {
+                $("#main").addClass("gap");
+            } else {
+                $("#main").removeClass("gap");
+            }
+        });
+    });
+    </script>
+</body>
+
+</html>
